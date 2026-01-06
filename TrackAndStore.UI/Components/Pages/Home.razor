@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using TrackAndStore.UI.Entity
-@inject EntityRepository EntityRepository
+@inject EntityRepository entityRepository
 
 <PageTitle>Home</PageTitle>
 
@@ -11,8 +11,8 @@ Welcome to your new app: @message
 @code {
     public string message = "";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        message = EntityRepository.GetMessage();
+        message = await entityRepository.GetMessageAsync();
     }
 }

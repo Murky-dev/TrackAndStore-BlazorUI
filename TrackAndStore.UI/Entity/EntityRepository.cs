@@ -1,16 +1,10 @@
 ﻿namespace TrackAndStore.UI.Entity;
 
-public class EntityRepository
+public class EntityRepository(IHttpClientFactory httpClientFactory)
 {
-    private HttpClient httpClient;
-
-    public EntityRepository()
+    public async Task<string> GetMessageAsync()
     {
-        httpClient = new HttpClient();
-    }
-
-    public string GetMessage()
-    {
-        return "One.. two.. three four five..";
+        var httpClient = httpClientFactory.CreateClient();
+        return await httpClient.GetStringAsync("https://www.google.com/");
     }
 }
