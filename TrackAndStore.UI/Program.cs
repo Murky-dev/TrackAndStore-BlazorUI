@@ -1,10 +1,13 @@
 using TrackAndStore.UI.Components;
+using TrackAndStore.UI.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<EntityRepository>();
 
 var app = builder.Build();
 
