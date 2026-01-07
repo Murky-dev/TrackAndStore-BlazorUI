@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="TrackAndStore.UI.Tests/TrackAndStore.UI.Tests.csproj" Id="69c7c881-f836-4e6d-80ac-035021c739f6" />
   <Project Path="TrackAndStore.UI/TrackAndStore.UI.csproj" />
 </Solution>
