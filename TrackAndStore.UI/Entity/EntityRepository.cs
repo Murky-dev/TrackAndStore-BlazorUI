@@ -4,16 +4,16 @@ public class EntityRepository(IHttpClientFactory httpClientFactory)
 {
     public async Task<Entity?> GetEntityByIdAsync(int id)
     {
-        var httpClient = httpClientFactory.CreateClient();
+        var httpClient = httpClientFactory.CreateClient("APIv1");
         // TODO: Set the base URL somewhere common (can we set this in the factory?)
-        return await httpClient.GetFromJsonAsync<Entity>($"http://localhost:3000/api/v1/entities/{id}");
+        return await httpClient.GetFromJsonAsync<Entity>($"entities/{id}");
     }
 
     public async Task<List<Entity>> GetEntitiesAsync()
     {
         // TODO: Pull  out into a property and/or base class.
-        var httpClient = httpClientFactory.CreateClient();
-        var entities = await httpClient.GetFromJsonAsync<List<Entity>>($"http://localhost:3000/api/v1/entities/");
+        var httpClient = httpClientFactory.CreateClient("APIv1");
+        var entities = await httpClient.GetFromJsonAsync<List<Entity>>($"entities/");
 
         if (entities == null)
             return new List<Entity>();

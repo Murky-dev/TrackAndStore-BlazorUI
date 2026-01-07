@@ -7,7 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("APIv1", client =>
+{
+    // TODO: Get from config.
+    client.BaseAddress = new Uri("http://localhost:3000/api/v1/");
+});
+
 builder.Services.AddScoped<EntityRepository>();
 
 var app = builder.Build();

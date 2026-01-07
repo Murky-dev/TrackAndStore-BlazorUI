@@ -6,7 +6,10 @@ public class MockHttpClientFactory : IHttpClientFactory
 {
     public HttpClient CreateClient(string name)
     {
-        return new HttpClient();
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri("http://localhost:3000/api/v1/");
+
+        return httpClient;
     }
 }
 
