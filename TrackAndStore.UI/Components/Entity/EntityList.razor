@@ -1,0 +1,31 @@
+﻿@if (Entities.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entity in Entities)
+            {
+                <tr>
+                    <td>@entity.Name</td>
+                    <td>@entity.EntityType</td>
+                    <td>@entity.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Empty.</p>
+}
+
+@code {
+    [Parameter]
+    public List<Entity> Entities { get; set; } = new();
+}

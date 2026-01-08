@@ -2,8 +2,18 @@
 @using TrackAndStore.UI.Entity
 @inject EntityRepository entityRepository
 
-<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<PageTitle>Track and Store</PageTitle>
 
-Welcome to your new app
+<h1>Track and Store</h1>
+
+<EntityList Entities="@entities" />
+
+@code
+{
+    private List<Entity> entities = new List<Entity>
+    {
+        new Entity { Id = 1, ParentId = null, Name = "Car", EntityType = EntityType.Container, Description = "Zoom!" },
+        new Entity { Id = 2, ParentId = null, Name = "Home", EntityType = EntityType.Location, Description = "No zoom." }
+    };
+}
