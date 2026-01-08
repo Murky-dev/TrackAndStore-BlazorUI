@@ -1,4 +1,6 @@
-﻿namespace TrackAndStore.UI.Entity;
+﻿using System.Text.Json.Serialization;
+
+namespace TrackAndStore.UI.Entity;
 
 public static class EntityType
 {
@@ -10,9 +12,18 @@ public static class EntityType
 
 public class Entity
 {
-    public int Id { get; set; }
-    public int ParentId { get; set; }
-    public string Name { get; set; } = default!;
-    public string EntityType { get; set; } = default!;
-    public string Description { get; set; } = default!;
+    [JsonPropertyName("id")]
+    public required int Id { get; set; }
+
+    [JsonPropertyName("parent_id")]
+    public int? ParentId { get; set; }
+
+    [JsonPropertyName("name")]
+    public required string Name { get; set; } = default!;
+
+    [JsonPropertyName("entity_type")]
+    public required string EntityType { get; set; } = default!;
+
+    [JsonPropertyName("description")]
+    public string? Description { get; set; } = default!;
 }
