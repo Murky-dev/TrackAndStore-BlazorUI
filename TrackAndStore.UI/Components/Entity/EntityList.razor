@@ -12,7 +12,7 @@
             @foreach (var entity in Entities)
             {
                 <tr>
-                    <td>@entity.Name</td>
+                    <td><a href="@GetEntityUrl(entity)">@entity.Name</a></td>
                     <td>@entity.EntityType</td>
                     <td>@entity.Description</td>
                 </tr>
@@ -28,4 +28,9 @@ else
 @code {
     [Parameter]
     public List<Entity> Entities { get; set; } = new();
+
+    public string GetEntityUrl(Entity entity)
+    {
+        return $"/{entity.Id}";
+    }
 }

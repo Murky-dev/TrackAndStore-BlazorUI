@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/{ParentId:int?}"
 @using TrackAndStore.UI.Entity
 @inject EntityRepository entityRepository
 
@@ -7,13 +7,32 @@
 
 <h1>Track and Store</h1>
 
-<EntityList Entities="@entities" />
+<EntityList Entities="@GetEntitiesByParentId(ParentId)" />
 
 @code
 {
-    private List<Entity> entities = new List<Entity>
+    [Parameter]
+    public int? ParentId { get; set; }
+
+    private List<Entity> entities = new()
     {
-        new Entity { Id = 1, ParentId = null, Name = "Car", EntityType = EntityType.Container, Description = "Zoom!" },
-        new Entity { Id = 2, ParentId = null, Name = "Home", EntityType = EntityType.Location, Description = "No zoom." }
+        new () { Id = 1, ParentId = null, Name = "Car", EntityType = EntityType.Container, Description = "Zoom!" },
+        new () { Id = 2, ParentId = null, Name = "Home", EntityType = EntityType.Location, Description = "No zoom" },
+        new () { Id = 3, ParentId = 1, Name = "Walking Coat", EntityType = EntityType.Item },
+        new () { Id = 4, ParentId = 1, Name = "Walking Boots", EntityType = EntityType.Item, Description = "Made for walking" },
+        new () { Id = 5, ParentId = 1, Name = "Old Phone", EntityType = EntityType.Item, Description = "In case of emergencies" },
+        new () { Id = 6, ParentId = 2, Name = "Bedroom", EntityType = EntityType.Location },
+        new () { Id = 7, ParentId = 2, Name = "Kitchen", EntityType = EntityType.Location },
+        new () { Id = 8, ParentId = 7, Name = "TV", EntityType = EntityType.Item },
+        new () { Id = 9, ParentId = 7, Name = "Swiss Cupboard", EntityType = EntityType.Container, Description = "Below the TV" },
+        new () { Id = 10, ParentId = 9, Name = "King of Tokyo", EntityType = EntityType.Item, Description = "Board game" },
+        new () { Id = 11, ParentId = 9, Name = "Ticket to Ride Europe", EntityType = EntityType.Item, Description = "Board game" },
+        new () { Id = 12, ParentId = 9, Name = "Cartographer", EntityType = EntityType.Item, Description = "Board game" },
+        new () { Id = 13, ParentId = 9, Name = "Small World Underworld", EntityType = EntityType.Item, Description = "Board game" },
     };
+
+    public List<Entity> GetEntitiesByParentId(int? parentId)
+    {
+        return entities.Where(e => e.ParentId == parentId).ToList();
+    }
 }
