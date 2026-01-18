@@ -13,32 +13,44 @@ public class MockHttpClientFactory : IHttpClientFactory
     }
 }
 
-public class EntityRestApi
+[Collection("Sequential")]
+public class EntityRestApi : IAsyncLifetime
 {
+    public async Task InitializeAsync()
+    {
+        // Rebuild database for each test.
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri("http://localhost:3000/dev/v1/migrations/");
+        await httpClient.GetAsync("reset");
+        await httpClient.GetAsync("testdata");
+    }
+
+    public async Task DisposeAsync() { }
+
     private EntityRepository EntityRepository()
     {
         var httpClientFactory = new MockHttpClientFactory();
         return new EntityRepository(httpClientFactory);
     }
 
-    [Fact(Skip = "The REST API has a bug: it's returning the object wrapped in an array.")]
+    [Fact]
     public async Task GetsTheCorrectEntityById()
     {
         var entity = await EntityRepository().GetByIdAsync(1);
         Assert.NotNull(entity);
         Assert.Equal(1, entity.Id);
-        Assert.Equal("Home", entity.Name);
+        Assert.Equal("Living room", entity.Name);
     }
 
     [Fact]
     public async Task GetsAllTheEntities()
     {
         var entities = await EntityRepository().GetAsync();
-        Assert.Equal(15, entities.Count);
-        Assert.Equal("Hat", entities[14].Name);
+        Assert.Equal(7, entities.Count);
+        Assert.Equal("Pocket Watch", entities[6].Name);
     }
 
-    [Fact(Skip = "The REST API has a bug: it's returning the object wrapped in an array.")]
+    [Fact]
     public async Task CreatesAValidEntityWithAllFields()
     {
         EntityCreateDto validEntity = new()
@@ -57,26 +69,30 @@ public class EntityRestApi
         Assert.Equal(validEntity.Description, entity.Description);
     }
 
-    [Fact(Skip = "The REST API has a bug: it's returning the object wrapped in an array.")]
+    [Fact]
     public async Task UpdatesAValidEntity()
     {
         Entity.Entity validEntity = new()
         {
-            Id = 8,
-            ParentId = 5,
-            Name = "Wallet",
-            EntityType = EntityType.Container,
-            Description = "A relic of the past?"
+            Id = 4,
+            ParentId = 2,
+            Name = "Glasses wipes",
+            EntityType = EntityType.Item,
+            Description = "Box of glasses wipes"
         };
 
         await EntityRepository().UpdateAsync(validEntity);
         var updatedEntity = await EntityRepository().GetByIdAsync(validEntity.Id);
 
         Assert.NotNull(updatedEntity);
-        Assert.Equal(validEntity, updatedEntity);
+        Assert.Equal(validEntity.Id, updatedEntity.Id);
+        Assert.Equal(validEntity.ParentId, updatedEntity.ParentId);
+        Assert.Equal(validEntity.Name, updatedEntity.Name);
+        Assert.Equal(validEntity.EntityType, updatedEntity.EntityType);
+        Assert.Equal(validEntity.Description, updatedEntity.Description);
     }
 
-    [Fact(Skip = "The REST API has a bug: it's returning the object wrapped in an array.")]
+    [Fact]
     public async Task DeletesAnExistingEntity()
     {
         int entityId = 7;
