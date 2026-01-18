@@ -10,7 +10,14 @@ public class EntityRepository(IHttpClientFactory httpClientFactory)
 
     public async Task<Entity?> GetByIdAsync(int id)
     {
-        return await HttpClient().GetFromJsonAsync<Entity>($"entities/{id}");
+        try
+        {
+            return await HttpClient().GetFromJsonAsync<Entity>($"entities/{id}");
+        }
+        catch (HttpRequestException e)
+        {
+            return null;
+        }
     }
 
     public async Task<List<Entity>> GetAsync()
